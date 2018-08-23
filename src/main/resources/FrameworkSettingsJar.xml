@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StockMarketSettings>
+	<CommonSettings>
+		<runFolder>/</runFolder>
+		<configFolder>/amp/common/api/resources/config</configFolder>
+		<isLoadSettingsFromFS>false</isLoadSettingsFromFS>
+	</CommonSettings>
+
+	<!--ORACLE 
+	<DatabaseSettings>
+		<Server>127.0.0.1</Server> 
+		<Port>1521</Port> 
+		<Database>XE</Database> 
+		<UserID>allmarket</UserID> 
+		<PWD>allmarket</PWD> 
+		<Authentication>s</Authentication> 
+		<IsUpperCase>n</IsUpperCase>
+		<JDBCConnectionPool>AMP_ConnectionPool</JDBCConnectionPool>
+		<JDBCResource>AMP_Resource</JDBCResource>
+		<JDBCUrl>jdbc:oracle:thin:@127.0.0.1:1521:XE</JDBCUrl>
+		<JDBCDriverName>oracle.jdbc.OracleDriver</JDBCDriverName>	
+		<dbsDataType>oracle</dbsDataType>
+	</DatabaseSettings>
+	 -->
+	<DatabaseSettings>
+		<Server>127.0.0.1</Server> 
+		<Port>3306</Port> 
+		<Database>allmarket</Database> 
+		<UserID>allmarket</UserID> 
+		<PWD>allmarket</PWD> 
+		<Authentication>s</Authentication> 
+		<IsUpperCase>n</IsUpperCase>
+		<JDBCConnectionPool>AMP_ConnectionPool</JDBCConnectionPool>
+		<JDBCResource>AMP_Resource</JDBCResource>
+		<JDBCUrl>jdbc:mysql://127.0.0.1:3306/allmarket</JDBCUrl>
+		<JDBCDriverName>com.mysql.jdbc.Driver</JDBCDriverName>	
+		<dbsDataType>mysql</dbsDataType>
+	</DatabaseSettings>
+	
+	<JMSSettings>
+		<JMSConnectionFactory>AMP_JMSPool</JMSConnectionFactory>
+		<JMSDestinationQueue>AMP_JMSQueue</JMSDestinationQueue> 
+	</JMSSettings>
+	
+    <!-- ORACLE
+    <HibernateSettings>
+		<hibernateArchiveAutodetection>class</hibernateArchiveAutodetection>
+		<hibernateSessionFactory>java:hibernate/SessionFactory</hibernateSessionFactory>
+		<hibernateJndiUrl>iiop://localhost:3700</hibernateJndiUrl>
+		<hibernateJndiClass>com.sun.enterprise.naming.SerialInitContextFactory</hibernateJndiClass>
+		<hibernateDialect>org.hibernate.dialect.Oracle10gDialect</hibernateDialect>
+		<hibernateConnectionDatasource>AMP_Resource</hibernateConnectionDatasource>
+		<hibernateOrderUpdates>true</hibernateOrderUpdates>
+		
+		<hibernateCacheProviderClass>org.hibernate.cache.HashtableCacheProvider</hibernateCacheProviderClass>
+		<hibernateTransactionFactoryClass>org.hibernate.transaction.JDBCTransactionFactory</hibernateTransactionFactoryClass>
+		<hibernateCurrentSessionContextClass>thread</hibernateCurrentSessionContextClass>
+		<hibernateConnectionDriverClass>oracle.jdbc.OracleDriver</hibernateConnectionDriverClass>
+		<hibernateConnectionUrl>jdbc:oracle:thin:@127.0.0.1:1521:XE</hibernateConnectionUrl>
+		<hibernateConnectionUsername>allmarket</hibernateConnectionUsername>
+		<hibernateConnectionPassword>allmarket</hibernateConnectionPassword>
+		
+	</HibernateSettings>
+	 -->
+	 <HibernateSettings>
+		<hibernateArchiveAutodetection>class</hibernateArchiveAutodetection>
+		<hibernateSessionFactory>java:hibernate/SessionFactory</hibernateSessionFactory>
+		<hibernateJndiUrl>iiop://localhost:3700</hibernateJndiUrl>
+		<hibernateJndiClass>com.sun.enterprise.naming.SerialInitContextFactory</hibernateJndiClass>
+		<hibernateConnectionDatasource>AMP_Resource</hibernateConnectionDatasource>
+		<hibernateOrderUpdates>true</hibernateOrderUpdates>
+		<hibernateCacheProviderClass>org.hibernate.cache.HashtableCacheProvider</hibernateCacheProviderClass>
+		<hibernateTransactionFactoryClass>org.hibernate.transaction.JDBCTransactionFactory</hibernateTransactionFactoryClass>
+		<hibernateCurrentSessionContextClass>thread</hibernateCurrentSessionContextClass>
+		<hibernateDialect>org.hibernate.dialect.MySQLDialect</hibernateDialect>
+		<hibernateConnectionDriverClass>com.mysql.jdbc.Driver</hibernateConnectionDriverClass>
+		<hibernateConnectionUrl>jdbc:mysql://localhost:3306/allmarket</hibernateConnectionUrl>
+		<hibernateConnectionUsername>allmarket</hibernateConnectionUsername>
+		<hibernateConnectionPassword>allmarket</hibernateConnectionPassword>
+		
+	</HibernateSettings>
+	
+	<WebServiceSettings>
+		<dmWebServiceMethodPort>
+		  TBD
+		</dmWebServiceMethodPort>
+    </WebServiceSettings>
+
+  <!--===================SQL Queries Settings=========================================-->	
+  <SQLSettings>
+		<sqlFile>FrameworkSQL.xml</sqlFile> 
+  </SQLSettings>
+
+  <!--===================Log4j Settings=========================================-->
+  <LoggerSettings>
+	  <log4JConfigFile>log4j.properties</log4JConfigFile>
+	  <logFolder>C:/AMP/log</logFolder>
+		<logFileName>AMPFramework.log</logFileName> 
+		<logNameProblems>AMPFrameworkProblems.log</logNameProblems> 
+		<eventSource>AMPFramework</eventSource> 
+  </LoggerSettings>
+</StockMarketSettings>

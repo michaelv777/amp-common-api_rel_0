@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Queries>
+ <getStocksFromDBByPortfolio>
+   select * from Stock where Stock.StockId in(select PortfolioStocks.StockId from PortfolioStocks where PortfolioStocks.PortfolioId = ?)
+ </getStocksFromDBByPortfolio>
+ 
+ <getStocksFromDB>
+   select * from Stock where Stock.StockId in (?)
+ </getStocksFromDB>
+ 
+ <getStockQuotesBySymbolAndPeriodFromDB>
+   select top(?) * from StockQuotes where StockId=? order by StockQuotes.CreateDate desc
+ </getStockQuotesBySymbolAndPeriodFromDB>
+ 
+ <getAllStocksFromDB>
+   select * from Stock
+ </getAllStocksFromDB>
+
+  <GetSmUsers>
+    Select * from dbo."Users"
+  </GetSmUsers>
+  
+  <GetSmPortfoliosByUser>
+    SELECT * FROM dbo.Portfolio INNER JOIN dbo.UserPortfolios ON (dbo.Portfolio.PortfolioId=dbo.UserPortfolios.PortfolioId) WHERE UserPortfolios.UserId=:UserId
+  </GetSmPortfoliosByUser>
+
+  <GetSmPortfoliosByUserName>
+    SELECT * FROM dbo.Portfolio INNER JOIN dbo.UserPortfolios ON (dbo.Portfolio.PortfolioId=dbo.UserPortfolios.PortfolioId) WHERE UserPortfolios.UserId=
+    (SELECT dbo.Users.UserId from dbo.Users where dbo.Users.FirstName=:FirstName)
+  </GetSmPortfoliosByUserName>
+
+  <GetSmUserByUserName>
+    select * from dbo."Users" where  Users.FirstName=:FirstName
+  </GetSmUserByUserName>
+  
+  <GetSmStocksByPortfolio>
+    SELECT * FROM dbo.Stock INNER JOIN  dbo.PortfolioStocks ON (dbo.Stock.StockId=dbo.PortfolioStocks.StockId) WHERE PortfolioStocks.PortfolioId=:PortfolioId
+  </GetSmStocksByPortfolio>
+
+  <GetSmQuotesByCycle>
+    SELECT * FROM dbo.CycleQuotes INNER JOIN dbo.Cycle ON (dbo.Cycle.CycleId=dbo.CycleQuotes.CycleId AND dbo.Cycle.PortfolioId=dbo.CycleQuotes.PortfolioId) WHERE dbo.CycleQuotes.CycleId=:CycleId AND dbo.CycleQuotes.PortfolioId=:PortfolioId
+  </GetSmQuotesByCycle>
+
+  <GetSmGraphsByCycle>
+    SELECT * FROM dbo.Graph INNER JOIN dbo.CycleGraphs ON (dbo.Graph.GraphId=dbo.CycleGraphs.GraphId) WHERE dbo.CycleGraphs.CycleId=:CycleId
+  </GetSmGraphsByCycle>
+  
+  <GetSmCyclesByPortfolio>
+    SELECT * FROM dbo.Cycle INNER JOIN  dbo.PortfolioCycles ON (dbo.Cycle.CycleId=dbo.PortfolioCycles.CycleId) WHERE PortfolioCycles.PortfolioId=:PortfolioId
+  </GetSmCyclesByPortfolio>
+
+  <GetSmQuotesByStock>
+    SELECT * FROM dbo.StockQuotes INNER JOIN dbo.Stock ON (dbo.Stock.StockId=dbo.StockQuotes.StockId) WHERE dbo.StockQuotes.StockId=:StockId AND DATEDIFF(DAY, dbo.StockQuotes.CreateDate, GETDATE()) &lt; ? ORDER BY dbo.StockQuotes.CreateDate DESC
+  </GetSmQuotesByStock>
+
+  <GetSmStockStateByGraph>
+    SELECT * FROM dbo.GraphStockState WHERE GraphId=:GraphId AND StepNumber = (SELECT MAX(StepNumber) FROM dbo.GraphStockState WHERE GraphId=:GraphId) ORDER BY StepNumber,UpdateDate desc
+  </GetSmStockStateByGraph>
+
+  <GetSmGraphProperties>
+    SELECT * FROM dbo.GraphProperties WHERE dbo.GraphProperties.GraphId=:GraphId
+  </GetSmGraphProperties>
+
+  <GetSmStockProperties>
+    SELECT * FROM dbo.StockProperties WHERE dbo.StockProperties.StockId=:StockId
+  </GetSmStockProperties>
+
+  <!--<GetSmGraphStepByStock>
+    SELECT * FROM dbo.GraphStockSteps WHERE GraphId=:GraphId and StockId=:StockId and StepNumber=:StepNumber
+  </GetSmGraphStepByStock>-->
+
+  <!--<GetSmGraphAllStepsByStock>
+    SELECT * FROM dbo.GraphStockSteps WHERE GraphId=:GraphId and StockId=:StockId 
+  </GetSmGraphAllStepsByStock>-->
+
+  <GetSmGraphOperations>
+    SELECT * FROM dbo.GraphOperations WHERE GraphId=:GraphId
+  </GetSmGraphOperations>
+  
+  <GetSmGraphOperationsByCurrencyAndStockRelation>
+    SELECT * FROM GraphOperations gop
+    WHERE
+    (gop.FromStockId=:StockIdCurrency and gop.ToStockId=:StockIdTo
+    OR
+    gop.FromStockId=:StockIdTo and gop.ToStockId=:StockIdCurrency)
+    AND
+    ( gop.GraphId = :GraphId )
+    AND
+    gop.OperationsSet2Sequence =
+    (select max(dbo.GraphOperations.OperationsSet2Sequence)
+    from dbo.GraphOperations
+    WHERE  dbo.GraphOperations.GraphId=:GraphId
+    AND  dbo.GraphOperations.FromStockId in (:StockIdCurrency,:StockIdTo)
+    AND  dbo.GraphOperations.ToStockId in (:StockIdCurrency,:StockIdTo))
+    ORDER BY gop.OperationsSet2Sequence, gop.OperationsSet2SequenceStep
+  </GetSmGraphOperationsByCurrencyAndStockRelation>
+  
+  <!--<GetSmGraphStocksDataByStep>
+    SELECT * FROM GraphStockSteps gss
+    WHERE
+    gss.StockId = :StockIdFrom
+    AND
+    gss.StepNumber = :StepNumber
+    AND
+    gss.GraphId = :GraphId
+    UNION
+    SELECT * FROM GraphStockSteps gss
+    WHERE
+    gss.StockId = :StockIdTo
+    AND
+    gss.StepNumber=:StepNumber
+    AND
+    gss.GraphId = :GraphId
+  </GetSmGraphStocksDataByStep>-->
+  
+  <GetLatestStockQuotestByUser>
+    SELECT distinct ST.Symbol,
+				SQ.CreateDate,
+				SQ.UpdateDate,
+				SQ.OpenPrice,
+                SQ.ClosePrice,
+                SQ.Volume 
+  FROM dbo.StockQuotes SQ,Stock ST 
+  WHERE ST.StockId=SQ.StockId
+  AND
+  SQ.CreateDate = 
+  (select MAX( StockQuotes.CreateDate) from StockQuotes where SQ.StockId=StockQuotes.StockId)
+  AND
+  SQ.StockId in 
+  (select StockId from PortfolioStocks where PortfolioStocks.PortfolioId in 
+  (select PortfolioId from UserPortfolios where UserPortfolios.UserId=?))
+   order by SQ.CreateDate desc
+  </GetLatestStockQuotestByUser>
+
+  <GetObjectOperationsByObjectType>
+    select ObjectOperations.ObjectOperationName as OperationName
+    from ObjectOperations
+    where ObjectOperations.ObjectTypeId =
+    (select ObjectTypeId from ObjectTypes where ObjectTypes.ObjectTypeName = '?')
+  </GetObjectOperationsByObjectType>
+
+  <!--<GetLatestStockSignalsByUser>
+    select Stock.Symbol,
+    (select StockAnalysisTypes.TypeName from StockAnalysisTypes
+    where  StockAnalysisTypes.TypeId = StockSignals.AnalysisTypeId
+    and Stock.StockId=StockSignals.StockId) as AnalysisType,
+    StockSignals.SignalValue as Value,
+    StockSignals.SignalDescription as Description,
+    StockSignals.CreateDate
+
+    from   Stock, StockSignals
+    where  Stock.StockId = StockSignals.StockId
+    and    Stock.StockId in
+    (select StockId from PortfolioStocks ps where ps.PortfolioId in
+    (select PortfolioId from UserPortfolios up where up.UserId=?))
+  </GetLatestStockSignalsByUser>-->
+
+  <GetLatestStockSignalsByUser>
+    Select Stock.StockId, Stock.Symbol,
+    (select StockSignals.SignalValue  from
+    StockSignals where
+    StockSignals.AnalysisTypeId =
+    (select StockAnalysisTypes.TypeId from StockAnalysisTypes
+    where StockAnalysisTypes.TypeName='SimpleMovingAverage')
+    and StockSignals.StockId=Stock.StockId) as SMA,
+    (select StockSignals.SignalValue  from
+    StockSignals where
+    StockSignals.AnalysisTypeId =
+    (select StockAnalysisTypes.TypeId from StockAnalysisTypes
+    where StockAnalysisTypes.TypeName='GeometricMovingAverage')
+    and StockSignals.StockId=Stock.StockId) as GMA,
+    (select StockSignals.SignalValue  from
+    StockSignals where
+    StockSignals.AnalysisTypeId =
+    (select StockAnalysisTypes.TypeId from StockAnalysisTypes
+    where StockAnalysisTypes.TypeName='ExponentiallyWeightedMovingAverage')
+    and StockSignals.StockId=Stock.StockId) as EWMA,
+    (select StockSignals.SignalValue  from
+    StockSignals where
+    StockSignals.AnalysisTypeId =
+    (select StockAnalysisTypes.TypeId from StockAnalysisTypes
+    where StockAnalysisTypes.TypeName='TrainingSet')
+    and StockSignals.StockId=Stock.StockId) as TrSet,
+    (select StockSignals.SignalValue  from
+    StockSignals where
+    StockSignals.AnalysisTypeId =
+    (select StockAnalysisTypes.TypeId from StockAnalysisTypes
+    where StockAnalysisTypes.TypeName='SimpleMovingAverageTrainingSet')
+    and StockSignals.StockId=Stock.StockId) as SMATrSet,
+    (select StockSignals.SignalValue  from
+    StockSignals where
+    StockSignals.AnalysisTypeId =
+    (select StockAnalysisTypes.TypeId from StockAnalysisTypes
+    where StockAnalysisTypes.TypeName='GeometricMovingAverageTrainingSet')
+    and StockSignals.StockId=Stock.StockId) as GMATrSet,
+    (select StockSignals.SignalValue  from
+    StockSignals where
+    StockSignals.AnalysisTypeId =
+    (select StockAnalysisTypes.TypeId from StockAnalysisTypes
+    where StockAnalysisTypes.TypeName='ExpotentialyWeightedMovingAverageTrainingSet')
+    and StockSignals.StockId=Stock.StockId) as EWMATrSet
+    from   Stock, StockSignals
+    where  Stock.StockId in
+    (select StockId from PortfolioStocks ps where ps.PortfolioId in
+    (select PortfolioId from UserPortfolios up where up.UserId=?))
+    group by Stock.StockId, Symbol;
+  </GetLatestStockSignalsByUser>
+
+  <getStockTAQuotesBySymbolAndPeriodAndTATypeFromDB>
+    select * from StockTAMovingAverageResults where
+    CreateDate >= ? and CreateDate  &lt;= ?  andStockId=? and AnalysisTypeId=? and Period=? order by CreateDate,Sequence asc
+    </getStockTAQuotesBySymbolAndPeriodAndTATypeFromDB>
+
+   <!--
+  <GetStoksOperationsByUserPortfolio>
+    select * from GraphOperations
+    where GraphOperations.GraphId in
+    (select CycleGraphs.GraphId from CycleGraphs where CycleGraphs.CycleId in
+    (select PortfolioCycles.CycleId from PortfolioCycles where PortfolioCycles.PortfolioId=?
+    and PortfolioCycles.PortfolioId in
+    (select UserPortfolios.PortfolioId from UserPortfolios where UserPortfolios.UserId=?)))
+    order by GraphId,CreateDate
+  </GetStoksOperationsByUserPortfolio>
+  -->
+  <GetStoksOperationsByUserPortfolio>
+    select
+    (
+    case
+    when GraphOperations.OperationTypeId = 5 then 'Buy'
+    when GraphOperations.OperationTypeId = 6 then 'Sell'
+    else 'Other'
+    end
+    ) as OpType,
+    (select Stock.Symbol from Stock where Stock.StockId= GraphOperations.FromStockId) as StockFrom,
+    (select Stock.Symbol from Stock where Stock.StockId= GraphOperations.ToStockId) as StockTo,
+    GraphOperations.OperationsSet2OperationStocksPrice as Price,
+    GraphOperations.OperationsSet2OperationStocksCount as Count,
+    GraphOperations.OperationsSet2OperationProfit OpProfit,
+    GraphOperations.OperationsSet2TotalProfit as TotalProfit,
+    GraphOperations.OperationsSet2WAveragePrice as WAvPrice,
+    GraphOperations.OperationsSet2TotalInvestedMoney as TotalInvestedMoney,
+    GraphOperations.CreateDate
+    from GraphOperations
+    where GraphOperations.GraphId in
+    (select CycleGraphs.GraphId from CycleGraphs where CycleGraphs.CycleId in
+    (select PortfolioCycles.CycleId from PortfolioCycles where PortfolioCycles.PortfolioId=?
+    and PortfolioCycles.PortfolioId in
+    (select UserPortfolios.PortfolioId from UserPortfolios where UserPortfolios.UserId=?)))
+    order by GraphOperations.GraphId,
+             GraphOperations.OperationsSet2Sequence,
+             GraphOperations.OperationsSet2SequenceStep,
+             GraphOperations.CreateDate
+  </GetStoksOperationsByUserPortfolio>
+  
+  
+</Queries>

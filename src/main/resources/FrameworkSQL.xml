@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Queries>
+  <getRootCategories>
+	select * from ALLMARKET.CATEGORY where CATEGORY.CATEGORY2SOURCE = (select sourceid from ALLMARKET.SOURCE where  SOURCE.NAME=:sourceName )
+	and CATEGORY.NAME != 'All Departments'  	
+  </getRootCategories>
+  
+  <getRootCategory>
+	select * from ALLMARKET.CATEGORY where CATEGORY.CATEGORY2SOURCE = (select sourceid from ALLMARKET.SOURCE where  SOURCE.NAME=:sourceName ) 
+	and  ALLMARKET.CATEGORY.ROOTBROWSENODE=:categoryBrowseNodeId   	
+  </getRootCategory>
+  
+  <getRootCategoriesNodes>
+	select * from node where node.NODELEVEL=2 and node.NODE2PARENTBROWSENODE in 
+        (select CATEGORY.ROOTBROWSENODE from ALLMARKET.CATEGORY  where CATEGORY.CATEGORY2SOURCE = 
+            (select sourceid from ALLMARKET.SOURCE where  SOURCE.NAME=:sourceName )) 
+    order by node.NODE2PARENTBROWSENODE   	
+  </getRootCategoriesNodes>
+  
+  <getRootCategorySubNodes>
+  select * from node where node.NODELEVEL=3 and NODE2PARENTBROWSENODE in 
+   (select NODE.BROWSENODEID from node where node.NODELEVEL=2 and node.NODE2PARENTBROWSENODE in 
+     (select CATEGORY.ROOTBROWSENODE from ALLMARKET.CATEGORY  where CATEGORY.ROOTBROWSENODE=:browseNode and CATEGORY.CATEGORY2SOURCE = 
+       (select sourceid from ALLMARKET.SOURCE where  SOURCE.NAME=:sourceName))) order by NODE2PARENTBROWSENODE
+  </getRootCategorySubNodes>
+	
+  <getWorker>
+	  select * from worker where name=:workerName
+  </getWorker>
+  	  
+  <getWorkerConfig>
+	  select * from worker_configuration
+	  where WORKERCONFIG2WORKER = (select WORKERID from worker where name=:workerName)
+	  order by WORKERCONFIG2SOURCE, WORKERCONFIG2CONFIGTYPE, WORKERCONFIG2WORKER
+  </getWorkerConfig>
+
+ <getWorkerThreadsConfig>
+	  SELECT * FROM thread_configuration tc where tc.THREADCONFIG2THREAD in 
+		(select wt.WORKERTHREAD2THREAD from worker_thread wt where wt.WORKERTHREAD2WORKER in
+		(select WORKERID from worker where name=:workerName))
+  </getWorkerThreadsConfig>
+  
+<getItemOpStatus>
+	select * from worker_data
+	where WORKERDATA2SOURCE = (select sourceid from source where name=:sourceName)
+	and   WORKERDATA2TARGET = (select targetid from target where name=:targetName)
+	and   WORKERDATA2WORKER = (select workerid from worker where name=:workerName)
+	and   WORKERDATA2THREAD = (select threadid from thread where name=:threadName)
+	and   WORKERDATA2OPTYPE = (select operationtypeid from operationtype_m where name=:opTypeName)
+	and   ITEMID = :itemKey
+	order by UPDATEDATE desc	
+</getItemOpStatus>
+
+</Queries>

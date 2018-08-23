@@ -1,0 +1,329 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+  	<groupId>amp.framework</groupId>
+  	<artifactId>amp-framework</artifactId>
+  	<version>1.0-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>amp.common.api</groupId>
+  <artifactId>amp-common-api</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>amp-common-api</name>
+  <!-- <url>http://maven.apache.org</url> -->
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <spring.framework.build>3.2.3.RELEASE</spring.framework.build>
+    <spring.framework.batch>3.0.3.RELEASE</spring.framework.batch>
+    <spring-security.version>3.1.4.RELEASE</spring-security.version>
+    <hibernate.core.version>3.4.0.GA</hibernate.core.version>
+    <hibernate.validator.version>6.0.0.Beta2</hibernate.validator.version>
+    <hibernate.jpa.version>1.0.1.Final</hibernate.jpa.version>
+    <org.slf4j-version>1.7.5</org.slf4j-version>
+    <jcl-over-slf4j.version>1.7.5</jcl-over-slf4j.version>
+    <mysql.connector.version>5.1.38</mysql.connector.version>
+    <oracle.jdbc.version>11.1.0.7</oracle.jdbc.version>
+  </properties>
+  
+  <build> 
+	<finalName>amp-common-api</finalName> 
+	
+	<plugins>
+	
+	<plugin>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.3</version><!--$NO-MVN-MAN-VER$-->
+	        <configuration>
+	            <source>1.8</source>
+	            <target>1.8</target>
+	        </configuration>
+	</plugin>
+     
+     <!-- 
+     <plugin>
+         <groupId>org.codehaus.mojo</groupId>
+         <artifactId>build-helper-maven-plugin</artifactId>
+         <executions>
+             <execution>
+                 <phase>generate-sources</phase>
+                 <goals>
+                     <goal>add-source</goal>
+                 </goals>
+                 <configuration>
+                     <sources>
+                         <source>src/test/java</source>
+                     </sources>
+                 </configuration>
+             </execution>
+         </executions>
+      </plugin>
+       -->
+      <plugin>
+       <groupId>org.apache.maven.plugins</groupId>
+       <artifactId>maven-jar-plugin</artifactId>
+       <version>3.0.2</version>
+       <executions>
+         <execution>
+           <goals>
+             <goal>test-jar</goal>
+           </goals>
+         </execution>
+       </executions>
+     </plugin>
+     
+    </plugins>
+	    
+    <resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			
+			<resource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+	</resources>
+		
+  </build>
+  
+  <dependencies>
+  	 <dependency>
+    	<groupId>amp.jpa.entities</groupId>
+    	<artifactId>amp-jpa-entities</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  
+    <dependency>
+      <groupId>junit</groupId>
+	  <artifactId>junit</artifactId>
+	  <version>4.12</version>
+    </dependency>
+   
+   <dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-entitymanager</artifactId>
+	    <version>${hibernate.core.version}</version>
+	</dependency>
+	
+   
+    <dependency>
+    	<groupId>com.oracle</groupId>
+    	<artifactId>oracle-jdbc</artifactId>
+    	<version>${oracle.jdbc.version}</version>
+    </dependency>
+    
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+	<dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <version>${mysql.connector.version}</version>
+	</dependency>
+	
+    <dependency>
+    	<groupId>log4j</groupId>
+    	<artifactId>log4j</artifactId>
+    	<version>1.2.12</version>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring.framework.build}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>${spring.framework.build}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.framework.build}</version>
+        <exclusions>
+        <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+        </exclusion>
+    </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+        <version>${spring.framework.build}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+        <version>${spring.framework.build}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${spring.framework.build}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+        <version>${spring.framework.build}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-orm</artifactId>
+        <version>${spring.framework.build}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>${spring.framework.build}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jms</artifactId>
+        <version>${spring.framework.build}</version>
+      </dependency> 
+      
+    <dependency>
+        <groupId>org.springframework.batch</groupId>
+        <artifactId>spring-batch-core</artifactId>
+        <version>${spring.framework.batch}</version>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.springframework.batch</groupId>
+        <artifactId>spring-batch-integration</artifactId>
+        <version>${spring.framework.batch}</version>
+      </dependency> 
+      
+     <dependency>
+        <groupId>org.springframework.batch</groupId>
+        <artifactId>spring-batch-admin-manager</artifactId>
+        <version>1.2.1.RELEASE</version>
+        <exclusions>
+            <exclusion>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-nop</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+             </exclusion>
+             <exclusion>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+             </exclusion>
+             <exclusion>
+                 <groupId>org.slf4j</groupId>
+                 <artifactId>jcl-over-slf4j</artifactId>
+             </exclusion>
+             <exclusion>
+		        <groupId>org.slf4j</groupId>
+		        <artifactId>slf4j-simple</artifactId>
+		     </exclusion>
+        </exclusions>
+      </dependency>
+	<dependency>
+	    <groupId>xml-apis</groupId>
+	    <artifactId>xml-apis</artifactId>
+	    <version>1.0.b2</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/cglib/cglib -->
+	<dependency>
+	    <groupId>cglib</groupId>
+	    <artifactId>cglib</artifactId>
+	    <version>2.1_3</version>
+	</dependency>
+
+	<!-- https://mvnrepository.com/artifact/asm/asm -->
+	<dependency>
+	    <groupId>asm</groupId>
+	    <artifactId>asm</artifactId>
+	    <version>1.5.3</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
+	<dependency>
+	    <groupId>org.apache.lucene</groupId>
+	    <artifactId>lucene-core</artifactId>
+	    <version>5.5.2</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-common -->
+	<dependency>
+	    <groupId>org.apache.lucene</groupId>
+	    <artifactId>lucene-analyzers-common</artifactId>
+	    <version>5.5.2</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers -->
+	<dependency>
+	    <groupId>org.apache.lucene</groupId>
+	    <artifactId>lucene-analyzers</artifactId>
+	    <version>3.6.2</version>
+	</dependency>	
+	
+	<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+	<dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-api</artifactId>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-jdk14 -->
+	<dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-jdk14</artifactId>
+	</dependency>
+	
+	<dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+    </dependency>
+   
+  </dependencies>
+  
+  <dependencyManagement>
+   <dependencies>
+   
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>${org.slf4j-version}</version>
+      </dependency>
+      
+      <dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-jdk14</artifactId>
+	    <version>${org.slf4j-version}</version>
+	  </dependency>
+	
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>jcl-over-slf4j</artifactId>
+         <version>${org.slf4j-version}</version>
+      </dependency>
+      
+      <!-- Since slf4j is a bridge, you need an implementation of it that would 
+      redirect all calls to slf4j or JCL. Following is to perform logging using 
+      the basic implementation, choose your preferred implementation 
+      (it seems you were using logback). -->
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-simple</artifactId>
+         <version>${org.slf4j-version}</version>
+         <scope>runtime</scope>
+      </dependency>
+  
+   </dependencies>
+ </dependencyManagement>
+</project>

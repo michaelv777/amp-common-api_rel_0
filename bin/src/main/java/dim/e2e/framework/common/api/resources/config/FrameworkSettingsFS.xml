@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StockMarketSettings>
+	<CommonSettings>
+		<runFolder>C:/E2E</runFolder>
+		<configFolder>C:/E2E/resources/config</configFolder>
+		<isLoadSettingsFromFS>true</isLoadSettingsFromFS>
+	</CommonSettings>
+
+	<DatabaseSettings>
+		<Server>indlin1149</Server> 
+		<Port>1521</Port> 
+		<Database>CNTRM149</Database> 
+		<UserID>CRAMER</UserID> 
+		<PWD>CRAMER</PWD> 
+		<Authentication>s</Authentication> 
+		<IsUpperCase>n</IsUpperCase>
+		<JDBCConnectionPool>DIME2E_ConnectionPool</JDBCConnectionPool>
+		<JDBCResource>DIME2E_Resource</JDBCResource>
+		<JDBCUrl>jdbc:oracle:thin:@indlin1149:1521:CNTRM149</JDBCUrl>
+		<JDBCDriverName>oracle.jdbc.OracleDriver</JDBCDriverName>	
+	</DatabaseSettings>
+	
+	<JMSSettings>
+		<JMSConnectionFactory>DIME2E_JMSPool</JMSConnectionFactory>
+		<JMSDestinationQueue>DIME2E_JMSQueue</JMSDestinationQueue> 
+	</JMSSettings>
+	
+	<GlassFishSettings> 
+		<ContextFactory>com.sun.enterprise.naming.SerialInitContextFactory</ContextFactory>
+		<ProviderURL>iiop://localhost:3700</ProviderURL>
+	</GlassFishSettings>
+
+    <HibernateSettings>
+		<hibernateArchiveAutodetection>class</hibernateArchiveAutodetection>
+		<hibernateSessionFactory>java:hibernate/SessionFactory</hibernateSessionFactory>
+		<hibernateJndiUrl>iiop://localhost:3700</hibernateJndiUrl>
+		<hibernateJndiClass>com.sun.enterprise.naming.SerialInitContextFactory</hibernateJndiClass>
+		<hibernateDialect>org.hibernate.dialect.Oracle10gDialect</hibernateDialect>
+		<hibernateConnectionDatasource>DIME2E_Resource</hibernateConnectionDatasource>
+		<hibernateOrderUpdates>true</hibernateOrderUpdates>
+		
+		<hibernateCacheProviderClass>org.hibernate.cache.HashtableCacheProvider</hibernateCacheProviderClass>
+		<hibernateTransactionFactoryClass>org.hibernate.transaction.JDBCTransactionFactory</hibernateTransactionFactoryClass>
+		<hibernateCurrentSessionContextClass>thread</hibernateCurrentSessionContextClass>
+		<hibernateConnectionDriverClass>oracle.jdbc.OracleDriver</hibernateConnectionDriverClass>
+		<hibernateConnectionUrl>jdbc:oracle:thin:@indlin1149:1521:CNTRM149</hibernateConnectionUrl>
+		<hibernateConnectionUsername>CRAMER</hibernateConnectionUsername>
+		<hibernateConnectionPassword>CRAMER</hibernateConnectionPassword>
+		
+		<!--  
+		<property name="cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+		<property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+    	<property name="current_session_context_class">thread</property>
+		<property name="connection.url">jdbc:oracle:thin:@indlin1149:1521:CNTRM149</property>
+		<property name="connection.driver_class">oracle.jdbc.OracleDriver</property>
+		<property name="connection.username">CRAMER</property>
+		<property name="connection.password">CRAMER</property>
+		-->
+	</HibernateSettings>
+	
+	<WebServiceSettings>
+		<dmWebServiceMethodPort>
+		  http://localhost:8080/DIME2E_WS/DIME2EHandlerMainService
+		</dmWebServiceMethodPort>
+
+		<taWebServiceMethodPort>
+		  
+		</taWebServiceMethodPort>
+
+		<nnWebServiceMethodPort>
+		  
+		</nnWebServiceMethodPort>
+    </WebServiceSettings>
+
+  <!--===================ActiveMQ Settings=========================================-->
+  <ActiveMQSettings>
+    <mqUser></mqUser>
+    <mqPassword></mqPassword>
+    <senderDestURI>tcp://localhost:61616</senderDestURI>
+    <senderDestQueue></senderDestQueue>
+    <receiverDestURI>tcp://localhost:61616</receiverDestURI>
+    <receiverDestQueue></receiverDestQueue>
+    <pollingCycle>60000</pollingCycle>
+  </ActiveMQSettings>
+	
+  <!--===================SQL Queries Settings=========================================-->	
+  <SQLSettings>
+		<sqlFile>C:/E2E/resources/config/FrameworkSQL.xml</sqlFile> 
+  </SQLSettings>
+
+  <!--===================Log4j Settings=========================================-->
+  <LoggerSettings>
+	  <log4JConfigFile>C:/E2E/resources/config/log4j.properties</log4JConfigFile>
+	  <logFolder>C:/E2E/log</logFolder>
+		<logFileName>DIME2EFramework.log</logFileName> 
+		<logNameProblems>DIME2EFrameworkProblems.log</logNameProblems> 
+		<eventSource>DIME2EFramework</eventSource> 
+  </LoggerSettings>
+</StockMarketSettings>
